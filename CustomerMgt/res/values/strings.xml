@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Coloring</string>
+    
+    <string name="action_settings1">홈</string>
+    <string name="action_settings2">확인 및 등록</string>
+    <string name="action_settings3">전체 색상표</string>
+
+    <string name="name">성명</string>
+    <string name="gender">성별</string>
+    <string name="msg">수신여부</string>
+    <string name="no">색상번호</string>
+    <string name="used">보유</string>
+    <string name="want">필요</string>
+    
+</resources>
