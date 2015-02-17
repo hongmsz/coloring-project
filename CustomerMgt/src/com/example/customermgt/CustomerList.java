@@ -19,10 +19,15 @@ import android.widget.Toast;
 
 public class CustomerList extends Activity {
 	
+	LinearLayout layout;
 	SQLiteDatabase sqlitedb;
 	DBManager dbmanager;
 	AlertDialog.Builder alertDialog;
+	int comp_no;
+    int view_opt;
+    String cName;
 	String vOpt;
+	int vOptValue;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,16 +36,23 @@ public class CustomerList extends Activity {
         
         Cursor cursor = null;
         Intent it = getIntent();
-        int comp_no   = it.getIntExtra("comp_op", 0);
-        int view_opt = it.getIntExtra("view_opt", 0);
-        String cName = it.getStringExtra("c_name");
+        comp_no   = it.getIntExtra("comp_op", 0);
+        view_opt = it.getIntExtra("view_opt", 0);
+        cName = it.getStringExtra("c_name");
         setTitle(cName);
-        if(view_opt == 1)
+        switch(view_opt){
+        case 1:
         	vOpt = " and used=1";
-        else
+        	break;
+        case 2:
+        	vOpt = " and want=1";
+        	break;
+        case 0:
         	vOpt = "";
+        	break;
+        }        
         
-        LinearLayout layout = (LinearLayout)findViewById(R.id.customer);
+        layout = (LinearLayout)findViewById(R.id.customer);
         
 	    try {    
 	        dbmanager = new DBManager(this);
@@ -56,7 +68,8 @@ public class CustomerList extends Activity {
 	        	cursor = sqlitedb.rawQuery("select * from colors where comp=3"+vOpt, null);
 	        	break;
 	        case 0:
-	        	cursor = sqlitedb.query("colors", null, "name is not null", null, null, null, null);
+	        	cursor = sqlitedb.rawQuery("select * from colors where comp>0"+vOpt, null);
+//	        	cursor = sqlitedb.query("colors", null, "name is not null", null, null, null, null);
 	        	break;
 	        }
 	        
@@ -120,48 +133,7 @@ public class CustomerList extends Activity {
 //	 	        tv_list.setTextSize(10);
 	 	        layout_list2.addView(tv_list2);
 
-	 	        layout_list.addView(layout_list2);
-/*	 	        
-				alertDialog = new AlertDialog.Builder(CustomerList.this); 
-				
-				// Setting Dialog Title 
-				alertDialog.setTitle("Save File...");  
-				
-				// Setting Dialog Message 
-				alertDialog.setMessage("Type Messages"); 
-				
-				// Setting Icon to Dialog
-//				alertDialog.setIcon(R.drawable.save);
-				
-				// Setting Positive "Yes" Button
-				alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						// User pressed YES button. Write Logic Here
-						Toast.makeText(getApplicationContext(), "You clicked on YES", Toast.LENGTH_SHORT).show();
-					}
-				});
-				// Setting Negative "NO" Button
-				alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) { 
-						// User pressed No button. Write Logic Here 
-						Toast.makeText(getApplicationContext(), "You clicked on NO", Toast.LENGTH_SHORT).show();
-					} 
-				}); 
-				// Setting Netural "Cancel" Button
-				alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) { 
-						// User pressed Cancel button. Write Logic Here 
-						Toast.makeText(getApplicationContext(), "You clicked on Cancel", Toast.LENGTH_SHORT).show();
-					} 
-				}); 
-    
-	 	        layout_list2.setOnClickListener(new OnClickListener(){
-	 	        	@Override
-					public void onClick(View v) {
-	 	        		alertDialog.show();
-					}
-	 	        });
-//*/	 	        
+	 	        layout_list.addView(layout_list2); 
 	 	        
 	 	        layout.addView(layout_list);
 	        }
@@ -178,22 +150,50 @@ public class CustomerList extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.vopt, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings1) {
-            Intent it    = new Intent(this, MainActivity.class);
+        if(id == R.id.action_settings4) {
+        	vOptValue = 1;
+        	Intent it    = new Intent(this, CustomerList.class);
+            it.putExtra("comp_op", comp_no);
+            it.putExtra("view_opt", vOptValue);
+            it.putExtra("c_name", cName);
+            
             startActivity(it);
             finish();
+//        	
+//        	layout.invalidate();
             return true;
-        } else if (id == R.id.action_settings2) {
-            Intent it    = new Intent(this, RegisterForm.class);
+        }else if (id == R.id.action_settings5) {
+        	vOptValue = 2;
+        	Intent it    = new Intent(this, CustomerList.class);
+            it.putExtra("comp_op", comp_no);
+            it.putExtra("view_opt", vOptValue);
+            it.putExtra("c_name", cName);
+            
             startActivity(it);
             finish();
+//            Intent it    = new Intent(this, RegisterForm.class);
+//            startActivity(it);
+//            finish();
+            return true;
+        }else if (id == R.id.action_settings6) {
+        	vOptValue = 0;
+        	Intent it    = new Intent(this, CustomerList.class);
+            it.putExtra("comp_op", comp_no);
+            it.putExtra("view_opt", vOptValue);
+            it.putExtra("c_name", cName);
+            
+            startActivity(it);
+            finish();
+//            Intent it    = new Intent(this, RegisterForm.class);
+//            startActivity(it);
+//            finish();
             return true;
         } 
         

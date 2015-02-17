@@ -30,10 +30,10 @@ public class MainActivity extends Activity {
 	int comp_no, opt1;
 	String cName;
 	LinearLayout Item_Container;
-	LinearLayout Opt_Container;
 	extern_View test;
 	Intent it;
 	boolean checkDB = false, checkDB1 = false, checkDB2 = false, checkDB3 = false;
+	int cnt1, cnt2, cnt3;
 	float x1, x2, y1, y2;
 	
 //	Display dp = ((WindowManager)this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
@@ -58,28 +58,6 @@ public class MainActivity extends Activity {
         
         db = mDB.getWritableDatabase();
         
-        checkDB1=Check_DB("comp=1 and used=1", checkDB1);
-
-        if(checkDB1 == false)
-        	test.Fimg01 = BitmapFactory.decodeResource(getBaseContext().getResources(),R.drawable.f2);
-        else
-        	test.Fimg01 = BitmapFactory.decodeResource(getBaseContext().getResources(),R.drawable.f1);
-        
-
-        checkDB2=Check_DB("comp=2 and used=1", checkDB2);
-        
-        if(checkDB2 == false)
-	    	test.Fimg02 = BitmapFactory.decodeResource(getBaseContext().getResources(),R.drawable.s2);
-	    else 
-	    	test.Fimg02 = BitmapFactory.decodeResource(getBaseContext().getResources(),R.drawable.s1);
-	    
-        checkDB3=Check_DB("comp=3 and used=1", checkDB3);
-        
-	    if(checkDB3 == false)
-	        test.Fimg03 = BitmapFactory.decodeResource(getBaseContext().getResources(),R.drawable.p2);
-	    else
-	    	test.Fimg03 = BitmapFactory.decodeResource(getBaseContext().getResources(),R.drawable.p1);
-        
         ContentValues values[] = new ContentValues[120];
         for(int k=0;k<120;k++){
         	values[k] = new ContentValues();
@@ -89,9 +67,6 @@ public class MainActivity extends Activity {
         for(int k=0;k<150;k++){
         	values2[k] = new ContentValues();
         }
-        
-        createContainer();
-        layout.addView(Item_Container);
         
         cursor = mDB.getReadableDatabase().rawQuery("select name from colors", null);
         
@@ -119,46 +94,39 @@ public class MainActivity extends Activity {
 	        
 	        toast.show();
         }
-//*/     
-        
-        createOptView();
-        layout.addView(Opt_Container);
-    }
-    /*
-    public void Color_F(View v) {
-    	comp_no = 1;
-    	
-    	Intent it = new Intent(this, CustomerList.class);
-    
-        it.putExtra("comp_op", comp_no);
-  
-        startActivity(it);
-
-        finish();
-    }
-	
-	public void Color_S(View v) {
-		comp_no = 2;
-    	Intent it = new Intent(this, CustomerList.class);
-    
-    	it.putExtra("comp_op", comp_no);
-  
-        startActivity(it);
-
-        finish();
-    }
-	
-	public void Color_P(View v) {
-		comp_no = 3;
-    	Intent it = new Intent(this, CustomerList.class);
-    
-    	it.putExtra("comp_op", comp_no);
-  
-        startActivity(it);
-
-        finish();
-    }
 //*/
+        int[] cntNum = new int[1];
+        cntNum[0] = 0;
+        checkDB1=Check_DB("comp=1 and used=1", checkDB1, cntNum);
+
+        test.cnt1 = cntNum[0];
+        if(checkDB1 == false)
+        	test.Fimg01 = BitmapFactory.decodeResource(getBaseContext().getResources(),R.drawable.f2);
+        else
+        	test.Fimg01 = BitmapFactory.decodeResource(getBaseContext().getResources(),R.drawable.f1);
+        
+
+        checkDB2=Check_DB("comp=2 and used=1", checkDB2, cntNum);
+        
+        test.cnt2 = cntNum[0];
+        if(checkDB2 == false)
+	    	test.Fimg02 = BitmapFactory.decodeResource(getBaseContext().getResources(),R.drawable.s2);
+	    else 
+	    	test.Fimg02 = BitmapFactory.decodeResource(getBaseContext().getResources(),R.drawable.s1);
+	    
+        checkDB3=Check_DB("comp=3 and used=1", checkDB3, cntNum);
+        
+        test.cnt3 = cntNum[0];
+	    if(checkDB3 == false)
+	        test.Fimg03 = BitmapFactory.decodeResource(getBaseContext().getResources(),R.drawable.p2);
+	    else
+	    	test.Fimg03 = BitmapFactory.decodeResource(getBaseContext().getResources(),R.drawable.p1);
+        
+        createContainer();
+        layout.addView(Item_Container);
+        
+    }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	getMenuInflater().inflate(R.menu.main, menu);
@@ -171,7 +139,7 @@ public class MainActivity extends Activity {
         if (id == R.id.action_settings2) {
             Intent it    = new Intent(this, RegisterForm.class);
             startActivity(it);
-            finish();
+//            finish();
             return true;
         } else if (id == R.id.action_settings3) {
         	comp_no = 0;
@@ -179,19 +147,22 @@ public class MainActivity extends Activity {
             it.putExtra("comp_op", comp_no);
             it.putExtra("c_name", "전체 색상표");
             startActivity(it);
-            finish();
+//            finish();
             return true;
         } else 
             return super.onOptionsItemSelected(item);
     }   
     
-	public boolean Check_DB(String tmp, boolean checkDB){
+	public boolean Check_DB(String tmp, boolean checkDB, int[] cnt){
 		Cursor ch = mDB.getReadableDatabase().rawQuery("select count(name) from colors where "+tmp, null);
-		while(ch.moveToNext()){
-	    	if(Integer.parseInt(ch.getString(0))>0){
+		ch.moveToFirst();
+		cnt[0] = ch.getInt(0);
+//		while(ch.moveToNext()){
+//	    	if(Integer.parseInt(ch.getString(0))>0)
+			if(cnt[0]>0)
 	    		checkDB = true;
-	    	}
-	    }
+//	    }
+		ch.close();
 		return checkDB;
     }
     
@@ -247,18 +218,5 @@ public class MainActivity extends Activity {
                 }
  				return true;
         }});
-    }
-    
-    public void createOptView(){
-    	Opt_Container = new LinearLayout(this);    	
-    	Opt_Container.setOrientation(LinearLayout.HORIZONTAL);
-    	    	  
-        CheckBox vOptBox1 = new CheckBox(this);
-        vOptBox1.setText("보유");
-        CheckBox vOptBox2 = new CheckBox(this);
-        vOptBox2.setText("필요");
-        
-        Opt_Container.addView(vOptBox1);
-        Opt_Container.addView(vOptBox2);
     }
 }
