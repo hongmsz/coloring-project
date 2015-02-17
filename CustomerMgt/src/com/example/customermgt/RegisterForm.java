@@ -196,6 +196,10 @@ public class RegisterForm extends Activity {
             return true;
         } else if (id == R.id.action_settings3) {
             Intent it    = new Intent(this, CustomerList.class);
+            
+            it.putExtra("comp_op", 0);
+            it.putExtra("c_name", "전체 색상표");
+            
             startActivity(it);
             finish();
             return true;
