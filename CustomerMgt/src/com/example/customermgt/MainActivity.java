@@ -94,6 +94,7 @@ public class MainActivity extends Activity {
 	        
 	        toast.show();
         }
+        cursor.close();
 //*/
         int[] cntNum = new int[1];
         cntNum[0] = 0;
