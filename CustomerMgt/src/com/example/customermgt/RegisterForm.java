@@ -31,7 +31,7 @@ public class RegisterForm extends Activity {
 	int str_want;
 	AlertDialog CompDialog;
 	AlertDialog.Builder alertDialog;
-	final CharSequence[] items = {"F*ber Castel", "Staedtler", "Prisma"};
+	final CharSequence[] items = {"F*ber C*stel", "St*dtler", "Pr*sma"};
 	String tmpS = "";
 	
 	
@@ -43,7 +43,7 @@ public class RegisterForm extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_form);
         
-        setTitle("색상 등록");
+        setTitle("확인 및 등록");
         layout = (LinearLayout)findViewById(R.id.LY2);
         et_no = (EditText)findViewById(R.id.no);
     	chk_used = (CheckBox)findViewById(R.id.used);
