@@ -31,7 +31,7 @@ public class RegisterForm extends Activity {
 	int str_want;
 	AlertDialog CompDialog;
 	AlertDialog.Builder alertDialog;
-	final CharSequence[] items = {"F*ber C*stel", "St*dtler", "Pr*sma"};
+	final CharSequence[] items = {"Faber Castel", "Staedtler", "Prisma"};
 	String tmpS = "";
 	
 	
