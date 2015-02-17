@@ -3,6 +3,7 @@ package com.example.customermgt;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
@@ -36,22 +37,33 @@ public class Register extends Activity {
 	        values.put("no",   str_no);
 	        values.put("used",    str_used);
 	        values.put("want",  str_want);
-	        long newRowId = sqlitedb.update("colors", values, "no="+str_no+str_comp, null);
-	        //long newRowId = sqlitedb.insert("colors", null, values);
+	        
+	        Cursor cursor = sqlitedb.rawQuery("select count(*) from colors where no="+str_no+str_comp, null);
+	        cursor.moveToFirst();
+			int cnt = cursor.getInt(0);
+			cursor.close();
+			
+	        if(cnt > 0){
+	        
+		        long newRowId = sqlitedb.update("colors", values, "no="+str_no+str_comp, null);
+		        //long newRowId = sqlitedb.insert("colors", null, values);
+		        
+		        if (newRowId != -1) {
+			        TextView tv_no   = (TextView)findViewById(R.id.no);
+			        TextView tv_used = (TextView)findViewById(R.id.used);
+			        TextView tv_want = (TextView)findViewById(R.id.want);
+			        
+			        tv_no.append(": " + str_no);
+			        tv_used.append(": " + str_used);
+			        tv_want.append(": " + str_want);
+		        } else {
+		    		Toast.makeText(this, "색상등록에러!", Toast.LENGTH_LONG).show();
+		        }
+	        }else
+	        	Toast.makeText(this, "존재하지 않는 색상입니다.", Toast.LENGTH_LONG).show();
+	        
 	        sqlitedb.close();
 	        dbmanager.close();
-	        
-	        if (newRowId != -1) {
-		        TextView tv_no   = (TextView)findViewById(R.id.no);
-		        TextView tv_used = (TextView)findViewById(R.id.used);
-		        TextView tv_want = (TextView)findViewById(R.id.want);
-		        
-		        tv_no.append(": " + str_no);
-		        tv_used.append(": " + str_used);
-		        tv_want.append(": " + str_want);
-	        } else {
-	    		Toast.makeText(this, "색상등록에러!", Toast.LENGTH_LONG).show();
-	        }
 	        
 	    } catch(SQLiteException e) {
 	    	Toast.makeText(this,  e.getMessage(), Toast.LENGTH_LONG).show();
