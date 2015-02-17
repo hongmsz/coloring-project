@@ -108,6 +108,7 @@ public class RegisterForm extends Activity {
         Intent it = new Intent(this, Register.class);
     
         it.putExtra("it_no", str_no);
+        it.putExtra("it_comp", tmpS);
         it.putExtra("it_used", str_used);
         it.putExtra("it_want", str_want);
   
@@ -189,8 +190,8 @@ public class RegisterForm extends Activity {
         int id = item.getItemId();
         
         if (id == R.id.action_settings1) {
-            Intent it    = new Intent(this, MainActivity.class);
-            startActivity(it);
+//            Intent it    = new Intent(this, MainActivity.class);
+//            startActivity(it);
             finish();
             return true;
         } else if (id == R.id.action_settings3) {

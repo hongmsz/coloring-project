@@ -25,6 +25,7 @@ public class Register extends Activity {
         
         Intent it = getIntent();
         int str_no   = it.getIntExtra("it_no", 0);
+        String str_comp = it.getStringExtra("it_comp");
         int str_used    = it.getIntExtra("it_used", 0);
         int str_want  = it.getIntExtra("it_want", 0);
         
@@ -35,7 +36,7 @@ public class Register extends Activity {
 	        values.put("no",   str_no);
 	        values.put("used",    str_used);
 	        values.put("want",  str_want);
-	        long newRowId = sqlitedb.update("colors", values, "no="+str_no, null);
+	        long newRowId = sqlitedb.update("colors", values, "no="+str_no+str_comp, null);
 	        //long newRowId = sqlitedb.insert("colors", null, values);
 	        sqlitedb.close();
 	        dbmanager.close();
@@ -68,8 +69,8 @@ public class Register extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings1) {
-            Intent it    = new Intent(this, MainActivity.class);
-            startActivity(it);
+//            Intent it    = new Intent(this, MainActivity.class);
+//            startActivity(it);
             finish();
             return true;
         } else if (id == R.id.action_settings2) {

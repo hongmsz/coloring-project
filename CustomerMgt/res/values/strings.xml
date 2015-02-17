@@ -4,8 +4,12 @@
     <string name="app_name">Coloring</string>
     
     <string name="action_settings1">홈</string>
-    <string name="action_settings2">확인 및 등록</string>
-    <string name="action_settings3">전체 색상표</string>
+    <string name="action_settings2">색상확인</string>
+    <string name="action_settings3">색상표</string>
+    
+    <string name="action_settings4">보유</string>
+    <string name="action_settings5">필요</string>
+    <string name="action_settings6">전체</string>
 
     <string name="name">성명</string>
     <string name="gender">성별</string>
