@@ -25,7 +25,6 @@ public class MainActivity extends Activity {
 	SQLiteDatabase db;
 	DBManager mDB;
 	Cursor cursor;
-//	Cursor ch;
 	Colors colorF, colorS, colorP;
 	int comp_no, opt1;
 	String cName;
@@ -35,9 +34,7 @@ public class MainActivity extends Activity {
 	boolean checkDB = false, checkDB1 = false, checkDB2 = false, checkDB3 = false;
 	int cnt1, cnt2, cnt3;
 	float x1, x2, y1, y2;
-	
-//	Display dp = ((WindowManager)this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-	
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +65,11 @@ public class MainActivity extends Activity {
         	values2[k] = new ContentValues();
         }
         
+        ContentValues values3[] = new ContentValues[60];
+        for(int k=0;k<60;k++){
+        	values3[k] = new ContentValues();
+        }
+        
         cursor = mDB.getReadableDatabase().rawQuery("select name from colors", null);
         
         while(cursor.moveToNext()){
@@ -79,15 +81,21 @@ public class MainActivity extends Activity {
         if(checkDB == false){
         	toast2.show();
         	colorF = new Colors(120);
+        	colorS = new Colors(60);
         	colorP = new Colors(150);
         	
         	values = colorF.init_Color_FC();
+        	values3 = colorS.init_Color_ST();
         	values2 = colorP.init_Color_PR();
         	
 	        for(int k=0;k<120;k++){
 	        	db.insert("colors",null,values[k]);
         	}
-	                	
+	           
+	        for(int k=0;k<60;k++){
+	        	db.insert("colors",null,values3[k]);
+        	}
+	        
 	        for(int k=0;k<150;k++){
 	        	db.insert("colors",null,values2[k]);
         	}
@@ -158,11 +166,8 @@ public class MainActivity extends Activity {
 		Cursor ch = mDB.getReadableDatabase().rawQuery("select count(name) from colors where "+tmp, null);
 		ch.moveToFirst();
 		cnt[0] = ch.getInt(0);
-//		while(ch.moveToNext()){
-//	    	if(Integer.parseInt(ch.getString(0))>0)
-			if(cnt[0]>0)
-	    		checkDB = true;
-//	    }
+		if(cnt[0]>0)
+    		checkDB = true;
 		ch.close();
 		return checkDB;
     }
@@ -182,7 +187,6 @@ public class MainActivity extends Activity {
         			x2=event.getX();
         			y2=event.getY();
         			
-//					test.invalidate();
         			if(checkDB1 == true && x2>0 && x2 < 330 && y2>150 && y2 < 450){
         				cName = "Faber Castel";
         				comp_no = 1;
@@ -191,8 +195,6 @@ public class MainActivity extends Activity {
         	            it.putExtra("view_opt", opt1);
         	            it.putExtra("c_name", cName);
         	            startActivity(it);
-
-//        	            finish();
         			}
         			if(checkDB2 == true && x2>335 && x2 < 665 && y2>150 && y2 < 450){
         				cName = "Staedtler";
@@ -202,8 +204,6 @@ public class MainActivity extends Activity {
         	            it.putExtra("view_opt", opt1);
         	            it.putExtra("c_name", cName);
         	            startActivity(it);
-
-//        	            finish();
         			}
         			if(checkDB3 == true && x2>670 && x2 < 1000 && y2>150 && y2 < 450){
         				cName = "Prisma";
@@ -213,8 +213,6 @@ public class MainActivity extends Activity {
         	            it.putExtra("view_opt", opt1);
         	            it.putExtra("c_name", cName);
         	            startActivity(it);
-
-//        	            finish();
         			}
                 }
  				return true;
